@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Tags {
+  id        String      @id @default(cuid())
+  label     String      @unique @db.VarChar(64)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  postsTags PostsTags[]
+
+  @@map("tags")
+}
+
+model Categories {
+  id        String   @id @default(cuid())
+  label     String   @unique @db.VarChar(64)
+  image     String   @default("https://via.placeholder.com/10x10")
+  className String   @default("bg-categories-default")
+  slug      String   @unique @db.VarChar(64)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Posts[]
+
+  @@map("categories")
+}
+
+model Posts {
+  id             String      @id @default(cuid())
+  slug           String      @unique @db.VarChar(256)
+  title          String      @db.VarChar(256)
+  description    String      @db.VarChar(256)
+  content        String      @db.Text
+  readingTime    Int         @default(0)
+  tags           PostsTags[]
+  category       Categories  @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  categoryId     String
+  publised       Boolean     @default(false)
+  views          Int         @default(0)
+  thumbnailLarge String      @default("https://via.placeholder.com/440x502")
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@map("posts")
+}
+
+model PostsTags {
+  post       Posts    @relation(fields: [postId], references: [id])
+  postId     String
+  tag        Tags     @relation(fields: [tagId], references: [id])
+  tagId      String
+  assignedAt DateTime @default(now())
+
+  @@id([postId, tagId])
+  @@map("posts_tags")
+}
