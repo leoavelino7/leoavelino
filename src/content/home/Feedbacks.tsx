@@ -31,7 +31,7 @@ export const Feedbacks = () => (
           </ButtonLink>
         </div>
       </div>
-      <div className="col-span-1 md:flex md:items-center bg-neutral-light px-7 lg:px-14">
+      <div className="col-span-1 md:flex md:items-center bg-neutral-light bg-opacity-20 px-7 lg:px-14">
         <FeedbackIllustration />
       </div>
     </section>
