@@ -7,7 +7,8 @@ import { Post } from "~/server/database/posts.server";
 import { BannerMain } from "./BannerMain";
 import { Feedbacks } from "./Feedbacks";
 import { Libs } from "./Libs";
-import { Categories, PostList } from "./PostList";
+import { PostList } from "./PostList";
+import { Categories } from "~/lib/categories";
 
 type LoaderData = {
   posts: Post[];

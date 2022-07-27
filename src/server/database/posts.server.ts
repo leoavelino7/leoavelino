@@ -41,6 +41,7 @@ export namespace Posts {
           select: {
             label: true,
             className: true,
+            slug: true,
             image: true
           }
         }

@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Link } from "remix";
 import { GitHubIcon, LeoAvelinoAlternativeIcon, TwitterIcon } from "~/icons";
 import { AppLinks } from "~/lib/appLinks";
+import { Categories, categoriesColor } from "~/lib/categories";
 import { Category } from "~/server/database/categories.server";
 import { Divider } from "./Divider";
 
@@ -38,7 +39,7 @@ export const Footer: FC<FooterProps> = ({ categories }) => (
                   to={AppLinks.homeCategory(category.slug)}
                   className="flex flex-row gap-x-2 items-center focus:outline-dashed-2 font-poppins font-semibold text-paper hover:brightness-75"
                 >
-                  <span className={`${category.className} p-1 rounded-md`}>
+                  <span className={`${categoriesColor[category.slug as Categories]} p-1 rounded-md`}>
                     <img src={category.image} className="w-4 h-4" />
                   </span>
                   {category.label}

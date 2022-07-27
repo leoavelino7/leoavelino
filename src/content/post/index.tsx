@@ -8,6 +8,7 @@ import { Nullable } from "~/lib/types";
 import { Category } from "~/server/database/categories.server";
 import { PostContent } from "~/server/database/posts.server";
 import { useProcessor } from "./hooks/useProcessor";
+import { Categories, categoriesColor } from "~/lib/categories";
 
 type LoaderData = {
   code: Nullable<string>;
@@ -48,7 +49,7 @@ export const Post = () => {
           <h1 className="font-poppins text-neutral-dark font-bold text-4xl md:text-5xl mt-3 text-center">{data.post.title}</h1>
           <h2 className="font-poppins text-neutral font-medium text-lg md:text-xl text-center mt-4 mb-6 max-w-7xl">{data.post.description}</h2>
           <h3>
-            <Chip className={`${data.post.category.className} flex flex-row items-center w-fit gap-x-1 uppercase`}>
+            <Chip className={`${categoriesColor[data.post.category.slug as Categories]} flex flex-row items-center w-fit gap-x-1 uppercase`}>
               <img src={data.post.category.image} className="w-5 h-5" alt="" />
               {data.post.category.label}
             </Chip>
