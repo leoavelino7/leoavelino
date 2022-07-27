@@ -2,7 +2,7 @@
   "private": true,
   "name": "leoavelino",
   "description": "Leo Avelino Blog",
-  "license": "",
+  "license": "MIT",
   "scripts": {
     "build": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css -m && remix build;",
     "css": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css --watch",
