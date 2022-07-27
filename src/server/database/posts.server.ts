@@ -40,7 +40,6 @@ export namespace Posts {
         category: {
           select: {
             label: true,
-            className: true,
             slug: true,
             image: true
           }

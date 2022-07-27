@@ -24,7 +24,6 @@ model Categories {
   id        String   @id @default(cuid())
   label     String   @unique @db.VarChar(64)
   image     String   @default("https://via.placeholder.com/10x10")
-  className String   @default("bg-categories-default")
   slug      String   @unique @db.VarChar(64)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,7 +44,7 @@ model Posts {
   categoryId     String
   publised       Boolean     @default(false)
   views          Int         @default(0)
-  thumbnailLarge String      @default("https://via.placeholder.com/440x502")
+  thumbnailLarge String      @default("https://via.placeholder.com/1140x641")
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 

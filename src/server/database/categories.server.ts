@@ -5,7 +5,6 @@ export type Category = {
   label: string;
   image: string;
   slug: string;
-  className: string;
   _count: {
     posts: number;
   };
@@ -20,7 +19,6 @@ export namespace Categories {
         label: true,
         image: true,
         slug: true,
-        className: true,
         _count: {
           select: {
             posts: true
