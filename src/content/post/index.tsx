@@ -9,6 +9,7 @@ import { Category } from "~/server/database/categories.server";
 import { PostContent } from "~/server/database/posts.server";
 import { useProcessor } from "./hooks/useProcessor";
 import { Categories, categoriesColor } from "~/lib/categories";
+import { useSupportedNavigatorShare } from "~/hooks/useSupportedNavigatorShare";
 
 type LoaderData = {
   code: Nullable<string>;
@@ -21,9 +22,10 @@ export const Post = () => {
   const data = useLoaderData<LoaderData>();
   const [shareData, setShareData] = useState<ShareData>({});
   const contentHtml = useProcessor(data.code ?? "");
+  const supportedNavigatorShare = useSupportedNavigatorShare();
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (supportedNavigatorShare) {
       setShareData({
         title: window.document.title,
         text: data.post.description,
