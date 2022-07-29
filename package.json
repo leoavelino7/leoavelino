@@ -6,18 +6,18 @@
   "scripts": {
     "build": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css -m && remix build;",
     "css": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css --watch",
-    "dev": "concurrently 'yarn css' 'remix dev'",
-    "prettier:check": "prettier --check 'src/**/*.(tsx|ts|json)'",
-    "prettier:write": "prettier --write 'src/**/*.(tsx|ts|json)'",
-    "prisma:studio": "prisma studio",
+    "database:local": "docker-compose up",
+    "start": "remix-serve api/_build",
+    "dev": "concurrently 'yarn css' 'dotenv -e .env.development remix dev'",
+    "postinstall": "remix setup node",
+    "prisma:studio": "dotenv -e .env.development prisma studio",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:migrate": "prisma migrate dev",
     "prisma:reset": "prisma migrate reset",
     "prisma:pull": "prisma db pull",
     "prisma:push": "prisma db push",
-    "db:local": "docker-compose up",
-    "postinstall": "remix setup node",
-    "start": "remix-serve api/_build"
+    "prettier:check": "prettier --check 'src/**/*.(tsx|ts|json)'",
+    "prettier:write": "prettier --write 'src/**/*.(tsx|ts|json)'"
   },
   "dependencies": {
     "@prisma/client": "4.0.0",
@@ -50,6 +50,7 @@
     "@types/react-dom": "18.0.5",
     "@types/react-syntax-highlighter": "15.5.2",
     "concurrently": "7.2.2",
+    "dotenv-cli": "6.0.0",
     "prettier": "2.7.1",
     "tailwindcss": "3.1.4",
     "typescript": "4.7.4"
