@@ -1,14 +1,38 @@
-import { Links, LinksFunction, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "remix";
+import { json, Links, LinksFunction, LiveReload, LoaderFunction, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useLocation } from "remix";
 import type { MetaFunction } from "remix";
 import css from "./styles/dist.css";
+import { Fragment, useEffect } from "react";
+
+import * as gtag from "~/lib/gtags.client";
+
+type LoaderData = {
+  gaTrackingId: string | undefined;
+};
+
+export const loader: LoaderFunction = async () => {
+  return json<LoaderData>({ gaTrackingId: process.env.GA_TRACKING_ID });
+};
 
 export const meta: MetaFunction = () => {
-  return { title: "Léo Avelino - Blog" };
+  return {
+    charset: "utf-8",
+    title: "Léo Avelino - Blog",
+    viewport: "width=device-width,initial-scale=1"
+  };
 };
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: css }];
 
 export default function App() {
+  const location = useLocation();
+  const { gaTrackingId } = useLoaderData<LoaderData>();
+
+  useEffect(() => {
+    if (gaTrackingId?.length) {
+      gtag.pageview(location.pathname, gaTrackingId);
+    }
+  }, [location, gaTrackingId]);
+
   return (
     <html lang="pt-br" className="theme-light">
       <head>
@@ -43,6 +67,25 @@ export default function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
+        {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
+          <Fragment>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`} />
+            <script
+              async
+              id="gtag-init"
+              dangerouslySetInnerHTML={{
+                __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaTrackingId}', {
+                  page_path: window.location.pathname,
+                });
+              `
+              }}
+            />
+          </Fragment>
+        )}
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
