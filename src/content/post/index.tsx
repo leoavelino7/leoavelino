@@ -32,7 +32,7 @@ export const Post = () => {
         url: window.location.href
       });
     }
-  }, []);
+  }, [supportedNavigatorShare]);
 
   return (
     <Fragment>
