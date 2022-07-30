@@ -43,7 +43,6 @@ model Posts {
   category       Categories  @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   categoryId     String
   publised       Boolean     @default(false)
-  views          Int         @default(0)
   thumbnailLarge String      @default("https://via.placeholder.com/1140x641")
   openGraph      Json?        
   createdAt      DateTime    @default(now())
