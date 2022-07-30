@@ -1,6 +1,12 @@
+import { Nullable } from "~/lib/types";
 import prisma from ".";
 import { Category } from "./categories.server";
 import { Tag } from "./tags.server";
+
+type OpenGraph = {
+  "og:image": string;
+  "twitter:image": string;
+};
 
 type PostTag = {
   tag: Tag;
@@ -14,6 +20,7 @@ export type Post = {
   tags: PostTag[];
   readingTime: number;
   thumbnailLarge: string;
+  openGraph: Nullable<OpenGraph>;
   slug: string;
   createdAt: string;
 };
@@ -36,6 +43,7 @@ export namespace Posts {
         createdAt: true,
         readingTime: true,
         thumbnailLarge: true,
+        openGraph: true,
         slug: true,
         category: {
           select: {
@@ -62,6 +70,7 @@ export namespace Posts {
         createdAt: true,
         category: true,
         thumbnailLarge: true,
+        openGraph: true,
         tags: {
           select: {
             tag: {
@@ -74,17 +83,4 @@ export namespace Posts {
         }
       }
     });
-
-  export const incrementViews = async (id: string) => {
-    await prisma.posts.update({
-      where: {
-        id
-      },
-      data: {
-        views: {
-          increment: 1
-        }
-      }
-    });
-  };
 }
