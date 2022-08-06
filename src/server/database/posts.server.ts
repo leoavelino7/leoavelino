@@ -2,6 +2,7 @@ import { Nullable } from "~/lib/types";
 import prisma from ".";
 import { Category } from "./categories.server";
 import { Tag } from "./tags.server";
+import PrismaClient from '@prisma/client';
 
 type OpenGraph = {
   "og:image": string;
@@ -31,8 +32,11 @@ export type PostContent = Post & {
 };
 
 export namespace Posts {
-  export const getAll = async (maxResults: number) =>
+  export const getAll = async (options?:  Pick<PrismaClient.Prisma.PostsAggregateArgs, "cursor" | "take" | "skip">) =>
     await prisma.posts.findMany({
+      where: {
+        publised: true
+      },
       orderBy: {
         createdAt: "desc"
       },
@@ -53,7 +57,7 @@ export namespace Posts {
           }
         }
       },
-      take: maxResults
+      ...options,
     });
 
   export const getBySlug = async (slug: string) =>

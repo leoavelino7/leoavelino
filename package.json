@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "leoavelino",
-  "description": "Leo Avelino Blog",
+  "description": "Leonardo Avelino Blog",
   "license": "MIT",
   "scripts": {
     "build": "tailwindcss -i ./src/styles/index.css -o ./src/styles/dist.css -m && remix build;",
@@ -27,10 +27,16 @@
     "@tippyjs/react": "4.2.6",
     "classnames": "2.3.1",
     "dotenv": "16.0.1",
+    "i18next": "21.8.16",
+    "i18next-browser-languagedetector": "6.1.4",
+    "i18next-fs-backend": "1.1.4",
+    "i18next-http-backend": "1.4.1",
     "postcss": "8.4.14",
     "prisma": "4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-focus-lock": "2.9.1",
+    "react-i18next": "11.18.3",
     "react-syntax-highlighter": "15.5.0",
     "react-toastify": "9.0.7",
     "rehype-document": "6.0.1",
@@ -42,10 +48,12 @@
     "remark-parse": "10.0.1",
     "remark-rehype": "10.1.0",
     "remix": "1.6.5",
+    "remix-i18next": "4.1.1",
     "unified": "10.1.2"
   },
   "devDependencies": {
     "@remix-run/dev": "1.6.2",
+    "@types/i18next-fs-backend": "1.1.2",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
     "@types/react-syntax-highlighter": "15.5.2",

@@ -10,6 +10,7 @@ import { PostContent } from "~/server/database/posts.server";
 import { useProcessor } from "./hooks/useProcessor";
 import { Categories, categoriesColor } from "~/lib/categories";
 import { useSupportedNavigatorShare } from "~/hooks/useSupportedNavigatorShare";
+import { useTranslation } from "react-i18next";
 
 type LoaderData = {
   code: Nullable<string>;
@@ -19,6 +20,8 @@ type LoaderData = {
 };
 
 export const Post = () => {
+  const { t, i18n, ready } = useTranslation("post_content");
+
   const data = useLoaderData<LoaderData>();
   const [shareData, setShareData] = useState<ShareData>({});
   const contentHtml = useProcessor(data.code ?? "");
@@ -42,11 +45,12 @@ export const Post = () => {
           <p className="flex flex-row gap-x-2 items-center text-primary font-medium font-poppins">
             Leonardo Avelino
             <span aria-hidden="true" className="rounded-full w-2 h-2 bg-primary" />
-            {new Date(data.post.createdAt).toLocaleDateString("pt-br", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric"
-            })}
+            {i18n.resolvedLanguage &&
+              new Date(data.post.createdAt).toLocaleDateString(i18n.resolvedLanguage.toLowerCase(), {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+              })}
           </p>
           <h1 className="font-poppins text-neutral-dark font-bold text-4xl md:text-5xl mt-3 text-center">{data.post.title}</h1>
           <h2 className="font-poppins text-neutral font-medium text-lg md:text-xl text-center mt-4 mb-6 max-w-7xl">{data.post.description}</h2>
@@ -63,7 +67,7 @@ export const Post = () => {
               <img src={data.post.thumbnailLarge} />
             </div>
             <div className="px-4 mx-auto w-full max-w-4xl">
-              <h3 className="font-poppins text-neutral font-medium text-3xl mt-4 mb-6">Sumário</h3>
+              <h3 className="font-poppins text-neutral font-medium text-3xl mt-4 mb-6">{t("summary")}</h3>
               <div className="pb-8">{contentHtml.list}</div>
               <Divider />
             </div>

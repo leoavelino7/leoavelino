@@ -1,4 +1,5 @@
 import { FC, Fragment, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast, ToastContainer } from "react-toastify";
 import { useSupportedNavigatorShare } from "~/hooks/useSupportedNavigatorShare";
 import { CopyIcon, FacebookIcon, InstagramIcon, TwitterIcon } from "~/icons";
@@ -35,6 +36,8 @@ type CopyAndShareProps = {
 };
 
 export const CopyAndShare: FC<CopyAndShareProps> = ({ text, shareData }) => {
+  const { t } = useTranslation();
+  
   const supportedNavigatorShare = useSupportedNavigatorShare();
   const [copyButtonIsDisabled, setCopyButtonIsDisabled] = useState(false);
 
@@ -45,7 +48,7 @@ export const CopyAndShare: FC<CopyAndShareProps> = ({ text, shareData }) => {
   const copy = () => {
     setCopyButtonIsDisabled(true);
     copyToClipboard(text);
-    toast.success("Link copiado", {
+    toast.success(t("copied_link"), {
       theme: "light",
       position: "bottom-center",
       autoClose: BLOCKED_TIME,
@@ -74,7 +77,7 @@ export const CopyAndShare: FC<CopyAndShareProps> = ({ text, shareData }) => {
             onClick={copy}
             disabled={copyButtonIsDisabled}
           >
-            <CopyIcon className={iconCommonClassName} /> Copiar link
+            <CopyIcon className={iconCommonClassName} /> {t("copy_link")}
           </button>
         </li>
         {supportedNavigatorShare &&

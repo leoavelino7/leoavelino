@@ -1,29 +1,50 @@
 import { json, LoaderFunction, MetaFunction } from "remix";
 import { Home } from "~/content/home";
+import { i18n } from "~/i18n.server";
+import { defaultLanguage } from "~/lib/language";
 import { Categories } from "~/server/database/categories.server";
 import { Posts } from "~/server/database/posts.server";
 
-const MAX_POST_TO_LIST = 20;
+const MAX_POST_TO_LIST = 10;
 
 type LoaderData = {
   url: string;
   domain: string;
+  title: string;
+  description: string;
 };
 
-export const loader: LoaderFunction = async () => {
+type Params = {
+  language: string;
+};
+
+export const loader: LoaderFunction = async (props) => {
+  const params = props.params as Params;
+  const t = await i18n.getFixedT(params.language ?? defaultLanguage, "home");
+
   const categories = await Categories.getAll();
-  const posts = await Posts.getAll(MAX_POST_TO_LIST);
+  const posts = await Posts.getAll({
+    take: MAX_POST_TO_LIST
+  });
+
+  const hasMore = posts.length === MAX_POST_TO_LIST;
 
   const url = process.env.APP_URL;
 
   const domain = process.env.APP_DOMAIN;
 
+  const title = t("page_title");
+  const description = t("page_description");
+
   return json(
     {
+      title,
+      description,
       url,
       domain,
       categories,
-      posts
+      posts: posts.slice(1),
+      hasMore
     },
     200
   );
@@ -32,10 +53,10 @@ export const loader: LoaderFunction = async () => {
 export const meta: MetaFunction = (props) => {
   const data = props.data as LoaderData;
 
-  const title = "Léo Avelino - Página inicial";
+  const title = data.title;
 
   const url = data.url;
-  const description = "Blog pessoal de Leonardo Avelino. Aprendendo e compartilhando conhecimentos de desenvolvimento de sistemas e de vida.";
+  const description = data.description;
 
   const facebookMetaTags: Record<`og:${string}`, string> = {
     "og:url": url,

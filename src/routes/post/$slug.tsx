@@ -5,6 +5,7 @@ import { Categories, Category } from "~/server/database/categories.server";
 import { markdown } from "~/lib/markdown";
 import { Post as PostView } from "../../content/post";
 import { Nullable } from "~/lib/types";
+import { isSupported, Language } from "~/lib/language";
 
 type LoaderData = {
   domain: string;
@@ -16,16 +17,28 @@ type LoaderData = {
   code: Nullable<string>;
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+type Params = {
+  language: Language;
+  slug: string;
+};
+
+export const loader: LoaderFunction = async (props) => {
+  const params = props.params as Params;
+
+  if (!isSupported(params.language)) {
+    throw new Response("Not Found", {
+      status: 404
+    });
+  }
+
   const categories = await Categories.getAll();
-  const slug = params.slug as string;
+  const slug = params.slug;
 
   const post = await Posts.getBySlug(slug);
 
   if (!post) {
-    return redirect("/404", {
-      status: 404,
-      statusText: "Post not found"
+    throw new Response("Not Found", {
+      status: 404
     });
   }
 
@@ -55,6 +68,7 @@ export const meta: MetaFunction = (props) => {
   const data = props.data as LoaderData;
 
   const title = data.title;
+  const description = data.post.description;
 
   const url = data.url;
 
@@ -62,7 +76,7 @@ export const meta: MetaFunction = (props) => {
     "og:url": url,
     "og:title": title,
     "og:type": "article",
-    "og:description": data.post.description,
+    "og:description": description,
     "og:image": data.post.openGraph?.["og:image"] || ""
   };
 
@@ -71,13 +85,13 @@ export const meta: MetaFunction = (props) => {
     "twitter:APP_DOMAIN": data.domain,
     "twitter:url": url,
     "twitter:title": title,
-    "twitter:description": data.post.description,
+    "twitter:description": description,
     "twitter:image": data.post.openGraph?.["twitter:image"] || ""
   };
 
   return {
     title,
-    decription: data.post.description,
+    description,
     ...facebookMetaTags,
     ...twitterMetaTags
   };

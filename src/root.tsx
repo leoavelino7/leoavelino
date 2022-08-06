@@ -1,22 +1,55 @@
-import { json, Links, LinksFunction, LiveReload, LoaderFunction, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useLocation } from "remix";
+import {
+  json,
+  Links,
+  LinksFunction,
+  LiveReload,
+  LoaderFunction,
+  Meta,
+  Outlet,
+  redirect,
+  Scripts,
+  ScrollRestoration,
+  useCatch,
+  useLoaderData,
+  useLocation
+} from "remix";
 import type { MetaFunction } from "remix";
 import css from "./styles/dist.css";
 import { Fragment, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import * as gtag from "~/lib/gtags.client";
+import { defaultLanguage, isSupported, Language } from "./lib/language";
+import { useChangeLanguage } from "remix-i18next";
 
 type LoaderData = {
   gaTrackingId: string | undefined;
+  language: Language;
 };
 
-export const loader: LoaderFunction = async () => {
-  return json<LoaderData>({ gaTrackingId: process.env.GA_TRACKING_ID });
+type Params = {
+  language: Language;
+};
+
+export const loader: LoaderFunction = async (props) => {
+  const params = props.params as Params;
+
+  if (Object.keys(params).length === 0) {
+    return redirect(`/${defaultLanguage}/`);
+  }
+
+  if (!isSupported(params.language)) {
+    throw new Response("Not Found", {
+      status: 404
+    });
+  }
+
+  return json<LoaderData>({ gaTrackingId: process.env.GA_TRACKING_ID, language: params.language });
 };
 
 export const meta: MetaFunction = () => {
   return {
     charset: "utf-8",
-    title: "Léo Avelino - Blog",
     viewport: "width=device-width,initial-scale=1"
   };
 };
@@ -25,16 +58,19 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: css }];
 
 export default function App() {
   const location = useLocation();
-  const { gaTrackingId } = useLoaderData<LoaderData>();
+  const { gaTrackingId, language } = useLoaderData<LoaderData>();
+  const { i18n, } = useTranslation();
 
   useEffect(() => {
-    if (gaTrackingId?.length) {
+    if (typeof window.gtag !== "undefined" && gaTrackingId?.length) {
       gtag.pageview(location.pathname, gaTrackingId);
     }
   }, [location, gaTrackingId]);
 
+  useChangeLanguage(language);
+    
   return (
-    <html lang="pt-br" className="theme-light">
+    <html lang={language} dir={i18n.dir()} className="theme-light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -87,6 +123,26 @@ export default function App() {
           </Fragment>
         )}
         {process.env.NODE_ENV === "development" && <LiveReload />}
+      </body>
+    </html>
+  );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  return (
+    <html>
+      <head>
+        <title>Oops! Page not found</title>
+        {/* <Meta /> */}
+        <Links />
+      </head>
+      <body>
+        <h1>
+          {caught.status} {caught.statusText}
+        </h1>
+        <Scripts />
       </body>
     </html>
   );
