@@ -3,11 +3,16 @@ export enum Language {
   EN = "en"
 }
 
+export type LanguageItem = {
+  children: string;
+  value: Language;
+};
+
 export const supportedLanguages = [Language.PT_BR, Language.EN];
 
-export const languages = [
-  { title: "English", lang: Language.EN },
-  { title: "Português (Brasil)", lang: Language.PT_BR }
+export const languages: LanguageItem[] = [
+  { children: "English", value: Language.EN },
+  { children: "Português (Brasil)", value: Language.PT_BR }
 ];
 
 export const defaultLanguage = Language.EN;
