@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 
 export type ThemeName = "theme-light" | "theme-dark" | "theme-heroes";
@@ -26,6 +26,7 @@ const isSupportedTheme = (theme: string) => themesValue.includes(theme as ThemeN
 
 export const useTheme = (): [string, (theme: string) => void] => {
   const [theme, setTheme] = useLocalStorage("@theme", "theme-light");
+  const lastThemeRef = useRef(theme);
 
   const changeTheme = (selectedTheme: string) => {
     if (isSupportedTheme(selectedTheme) && selectedTheme !== theme) {
@@ -35,7 +36,10 @@ export const useTheme = (): [string, (theme: string) => void] => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.document.documentElement.className = theme;
+      const { classList } = window.document.documentElement;
+      classList.remove(lastThemeRef.current);
+      classList.add(theme);
+      lastThemeRef.current = theme;
     }
   }, [theme]);
 

@@ -7,6 +7,7 @@ import { isSupported, languages, LanguageItem } from "~/lib/language";
 import { FC, Fragment, useEffect, useState } from "react";
 import { Dropdown } from "./Dropdown";
 import { Theme, themes, useTheme } from "~/hooks/useTheme";
+import { FontSize, fontSizeList, useFontSize } from "~/hooks/useFontSize";
 
 const getPathnameWithoutLanguage = (pathname: string) => pathname.split("/").slice(2).join("/");
 
@@ -16,6 +17,7 @@ export const Header: FC = () => {
   const location = useLocation();
 
   const [theme, setTheme] = useTheme();
+  const [fontSize, setFontSize] = useFontSize();
   const [language, setLanguage] = useState(() => getPathnameWithoutLanguage(location.pathname));
 
   const changeLanguage = ({ value }: LanguageItem) => {
@@ -60,6 +62,14 @@ export const Header: FC = () => {
             list={themes}
             change={(theme) => setTheme(theme.value)}
             itemActive={theme}
+            itemClassName="text-left w-full px-4 py-2 hover:bg-primary-light"
+          />
+
+          <Dropdown<FontSize>
+            label={t("header_font_size")}
+            list={fontSizeList}
+            change={(fontSize) => setFontSize(fontSize.value)}
+            itemActive={fontSize}
             itemClassName="text-left w-full px-4 py-2 hover:bg-primary-light"
           />
         </div>

@@ -7,6 +7,7 @@ import { AppLinks } from "~/lib/appLinks";
 import { isSupported, Language, languages } from "~/lib/language";
 import { FC, useEffect, useReducer, useRef, useState } from "react";
 import classNames from "classnames";
+import { Nullable } from "~/lib/types";
 
 const KeyboardEscape = "Escape";
 
@@ -61,7 +62,7 @@ export const Dropdown = <Item extends Option>({ label, list, change, itemClassNa
         if (nextItemButtonElement) return void nextItemButtonElement.focus();
       }
 
-      if (currentItem.previousSibling) {
+      if (event.key === KeyboardArrow.ArrowUp && currentItem.previousSibling) {
         const previousItemButtonElement = currentItem.previousSibling.firstChild as HTMLButtonElement;
         if (previousItemButtonElement) return void previousItemButtonElement.focus();
       }
@@ -69,17 +70,22 @@ export const Dropdown = <Item extends Option>({ label, list, change, itemClassNa
       const itemsSize = items.length;
 
       if (itemsSize > 0) {
-        const lastItem = items[itemsSize - 1].firstChild as HTMLButtonElement;
+        const position = event.key === KeyboardArrow.ArrowDown ? 0 : itemsSize - 1;
+        const lastItem = items[position].firstChild as HTMLButtonElement;
         if (lastItem) return void lastItem.focus();
       }
     }
   };
 
   useEffect(() => {
-    if (itemActive) {
-      changeButtonRef.current?.focus();
+    if (isOpenMenu) {
+      const firstItem = listRef.current?.firstChild?.firstChild as Nullable<HTMLLIElement>;
+      firstItem?.focus();
+      return;
     }
-  }, [itemActive]);
+
+    changeButtonRef.current?.focus();
+  }, [isOpenMenu]);
 
   return (
     <div className="relative z-20">
