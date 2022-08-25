@@ -19,7 +19,7 @@ import { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import * as gtag from "~/lib/gtags.client";
-import { defaultLanguage, isSupported, Language } from "./lib/language";
+import { fallbackLng, isSupported, Language } from "./lib/language";
 import { useChangeLanguage } from "remix-i18next";
 
 type LoaderData = {
@@ -35,7 +35,7 @@ export const loader: LoaderFunction = async (props) => {
   const params = props.params as Params;
 
   if (Object.keys(params).length === 0) {
-    return redirect(`/${defaultLanguage}/`);
+    return redirect(`/${fallbackLng}/`);
   }
 
   if (!isSupported(params.language)) {

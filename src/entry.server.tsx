@@ -2,11 +2,11 @@ import { RemixServer } from "@remix-run/react";
 import type { EntryContext } from "@remix-run/server-runtime";
 import { createInstance } from "i18next";
 import Backend from "i18next-fs-backend";
-import { resolve } from "node:path";
+import {resolve} from "node:path";
 import { renderToString } from "react-dom/server";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { i18n } from "./i18n.server";
-import { defaultLanguage, localePath, supportedLanguages } from "./lib/language";
+import { fallbackLng, localePath, supportedLngs } from "./lib/language";
 
 export default async function handleRequest(request: Request, statusCode: number, headers: Headers, context: EntryContext) {
   // First, we create a new instance of i18next so every request will have a
@@ -23,14 +23,14 @@ export default async function handleRequest(request: Request, statusCode: number
     .use(Backend) // Setup our backend
     .init({
       // And configure i18next as usual
-      supportedLngs: supportedLanguages,
-      fallbackLng: defaultLanguage,
+      supportedLngs,
+      fallbackLng,
       // Disable suspense again here
       react: { useSuspense: false },
       lng, // The locale we detected above
       ns, // The namespaces the routes about to render want to use
       backend: {
-        loadPath: resolve(`./public/static/locales`),
+        loadPath: resolve(`./public/${localePath}`),
       }
     });
 

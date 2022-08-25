@@ -1,7 +1,7 @@
 import { json, LoaderFunction, MetaFunction } from "remix";
 import { Home } from "~/content/home";
 import { i18n } from "~/i18n.server";
-import { defaultLanguage } from "~/lib/language";
+import { fallbackLng } from "~/lib/language";
 import { Categories } from "~/server/database/categories.server";
 import { Posts } from "~/server/database/posts.server";
 
@@ -20,7 +20,10 @@ type Params = {
 
 export const loader: LoaderFunction = async (props) => {
   const params = props.params as Params;
-  const t = await i18n.getFixedT(params.language ?? defaultLanguage, "home");
+  const t = await i18n.getFixedT(params.language ?? fallbackLng, "home");
+
+  console.log(t);
+  console.log(t("page_title"));
 
   const categories = await Categories.getAll();
   const posts = await Posts.getAll({
