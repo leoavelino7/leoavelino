@@ -18,22 +18,22 @@ export const Header: FC = () => {
 
   const [theme, setTheme] = useTheme();
   const [fontSize, setFontSize] = useFontSize();
-  const [language, setLanguage] = useState(() => getPathnameWithoutLanguage(location.pathname));
+  const [language, setLanguage] = useState("");
 
   const changeLanguage = ({ value }: LanguageItem) => {
     if (isSupported(value) && value !== i18n.resolvedLanguage) {
       const pathnameWithoutLanguage = getPathnameWithoutLanguage(location.pathname);
       const to = `/${value}/${pathnameWithoutLanguage}${location.hash}${location.search}`;
+      console.log('opa', value);
       setLanguage(value);
+      i18n.changeLanguage(value);
       navigate(to);
     }
   };
 
   useEffect(() => {
-    if (language) {
-      i18n.changeLanguage(language);
-    }
-  }, [language]);
+    if (!language && i18n.resolvedLanguage) setLanguage(i18n.resolvedLanguage);
+  }, [i18n.resolvedLanguage, language]);
 
   return (
     <nav className="relative flex items-center w-full bg-paper h-20 header-shadow z-40">
@@ -45,6 +45,7 @@ export const Header: FC = () => {
         </header>
         <div className="flex flex-row gap-4">
           <Dropdown<LanguageItem>
+            id="language-dropdown"
             label={
               <Fragment>
                 <TranslateIcon />
@@ -53,11 +54,12 @@ export const Header: FC = () => {
             }
             list={languages}
             change={changeLanguage}
-            itemActive={language}
+            itemActive={language ?? i18n.resolvedLanguage}
             itemClassName="text-left w-full px-4 py-2 hover:bg-primary-light"
           />
 
           <Dropdown<Theme>
+            id="theme-dropdown"
             label={t("header_themes")}
             list={themes}
             change={(theme) => setTheme(theme.value)}
@@ -66,6 +68,7 @@ export const Header: FC = () => {
           />
 
           <Dropdown<FontSize>
+            id="font-size-dropdown"
             label={t("header_font_size")}
             list={fontSizeList}
             change={(fontSize) => setFontSize(fontSize.value)}
