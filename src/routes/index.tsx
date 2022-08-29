@@ -22,9 +22,6 @@ export const loader: LoaderFunction = async (props) => {
   const params = props.params as Params;
   const t = await i18n.getFixedT(params.language ?? fallbackLng, "home");
 
-  console.log(t);
-  console.log(t("page_title"));
-
   const categories = await Categories.getAll();
   const posts = await Posts.getAll({
     take: MAX_POST_TO_LIST
