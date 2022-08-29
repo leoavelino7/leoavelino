@@ -1,11 +1,6 @@
-import { Link, useLocation, useNavigate } from "remix";
-import { useTranslation } from "react-i18next";
 import FocusLock from "react-focus-lock";
 
-import { LeoAvelinoIcon, TranslateIcon } from "~/icons";
-import { AppLinks } from "~/lib/appLinks";
-import { isSupported, Language, languages } from "~/lib/language";
-import { FC, useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { Nullable } from "~/lib/types";
 
@@ -24,6 +19,7 @@ type Option = {
 };
 
 type DropdownProps<Item> = {
+  id: string;
   label: JSX.Element;
   list: Array<Item>;
   itemActive: string;
@@ -31,7 +27,8 @@ type DropdownProps<Item> = {
   itemClassName?: string;
 };
 
-export const Dropdown = <Item extends Option>({ label, list, change, itemClassName = "", itemActive }: DropdownProps<Item>) => {
+export const Dropdown = <Item extends Option>({ id, label, list, change, itemClassName = "", itemActive }: DropdownProps<Item>) => {
+  const [listening, setListening] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isFocusUnlocked, setIsFocusUnlocked] = useState(false);
 
@@ -87,14 +84,41 @@ export const Dropdown = <Item extends Option>({ label, list, change, itemClassNa
     changeButtonRef.current?.focus();
   }, [isOpenMenu]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const click = (event: MouseEvent | TouchEvent) => {
+        if (event.target && changeButtonRef.current?.contains(event.target as any)) return;
+        setIsOpenMenu(false);
+      };
+
+      if (listening) return;
+      if (!changeButtonRef.current) return;
+      setListening(true);
+      document.addEventListener("click", click);
+      document.addEventListener("touchstart", click);
+    }
+  }, [listening]);
+
   return (
     <div className="relative z-20">
-      <button ref={changeButtonRef} className="flex gap-2 text-md focus:outline-dashed" onClick={toggleMenu}>
+      <button
+        ref={changeButtonRef}
+        id={id}
+        aria-haspopup="true"
+        aria-expanded={isOpenMenu}
+        className="flex gap-2 text-md focus:outline-dashed"
+        onClick={toggleMenu}
+      >
         {label}
       </button>
       {isOpenMenu && (
         <FocusLock disabled={isFocusUnlocked}>
-          <ul ref={listRef} onKeyDown={onKeyDown} className="flex flex-col w-[200px] absolute top-10 right-0 bg-paper header-shadow rounded-md">
+          <ul
+            ref={listRef}
+            onKeyDown={onKeyDown}
+            className="flex flex-col w-[200px] absolute top-10 right-0 bg-paper header-shadow rounded-md"
+            aria-labelledby={id}
+          >
             {list.map((item, index) => {
               const className = classNames(itemClassName, {
                 "bg-primary-light bg-opacity-50": item.value === itemActive
