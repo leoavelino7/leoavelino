@@ -24,7 +24,6 @@ export const Header: FC = () => {
     if (isSupported(value) && value !== i18n.resolvedLanguage) {
       const pathnameWithoutLanguage = getPathnameWithoutLanguage(location.pathname);
       const to = `/${value}/${pathnameWithoutLanguage}${location.hash}${location.search}`;
-      console.log('opa', value);
       setLanguage(value);
       i18n.changeLanguage(value);
       navigate(to);
