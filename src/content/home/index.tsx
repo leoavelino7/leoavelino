@@ -30,13 +30,13 @@ export const Home = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header loading={!ready} />
       <main>
-        <BannerMain language={i18n.resolvedLanguage} translate={t} loading={ready} />
+        <BannerMain language={i18n.resolvedLanguage} translate={t} loading={!ready} />
         <PostList
           language={i18n.resolvedLanguage}
           translate={t}
-          loading={ready}
+          loading={!ready}
           posts={data.posts}
           categories={data.categories}
           selectedCategory={selectedCategory}
@@ -44,9 +44,9 @@ export const Home = () => {
           hasMore={data.hasMore}
           onClickSeeMore={seeMore}
         />
-        <Libs translate={t} loading={ready} />
-        <Feedbacks translate={t} loading={ready} />
-        <Footer language={i18n.resolvedLanguage} categories={data.categories} />
+        <Libs translate={t} loading={!ready} />
+        <Feedbacks translate={t} loading={!ready} />
+        <Footer language={i18n.resolvedLanguage} categories={data.categories} loading={!ready} />
       </main>
     </Fragment>
   );

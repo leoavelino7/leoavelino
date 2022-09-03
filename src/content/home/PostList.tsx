@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Link } from "remix";
+import Skeleton from "react-loading-skeleton";
 
 import { Category } from "~/server/database/categories.server";
 import { Post } from "~/server/database/posts.server";
@@ -53,14 +54,25 @@ type PostListProps = ComponentI18n & {
   onClickSeeMore: () => void;
 };
 
-export const PostList: FC<PostListProps> = ({ translate, loading, posts, categories, selectedCategory, setSelectedCategory, hasMore, onClickSeeMore }) => (
+export const PostList: FC<PostListProps> = ({
+  translate,
+  loading,
+  posts,
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+  hasMore,
+  onClickSeeMore
+}) => (
   <section className="relative w-full py-28" id={translate("section_category_id")}>
     <div className="flex flex-col justify-center items-center text-center px-4 lg:px-0">
-      <header>
+      <header className="w-full">
         <Chip Tag="h2" className="w-fit m-auto">
-          {translate("section_category_chip")}
+          {loading ? <Skeleton width="100px" height="10px" /> : translate("section_category_chip")}
         </Chip>
-        <h3 className="font-bold font-poppins max-w-[770px] text-3xl lg:text-4xl mt-4">{translate("section_category_title")}</h3>
+        <h3 className="mx-auto w-full font-bold font-poppins max-w-[770px] text-3xl lg:text-4xl mt-4">
+          {loading ? <Skeleton /> : translate("section_category_title")}
+        </h3>
       </header>
       <ul className="flex flex-row flex-nowrap max-w-full overflow-y-auto gap-x-7 py-3 lg:py-6 px-10 mt-11 border border-solid border-neutral-light rounded-md">
         <li>
@@ -73,7 +85,7 @@ export const PostList: FC<PostListProps> = ({ translate, loading, posts, categor
               selectedCategory === Categories.All ? categoriesColor[Categories.All] : categoriesColor[Categories.Default]
             )}
           >
-            {translate("section_category_filter_all")}
+            {loading ? <Skeleton width="100px" /> : translate("section_category_filter_all")}
           </button>
         </li>
         {categories.map((category) => (
@@ -99,11 +111,9 @@ export const PostList: FC<PostListProps> = ({ translate, loading, posts, categor
       </div>
 
       {hasMore && (
-        <div
-          className="w-fit m-auto mt-12 lg:mt-24"
-        >
+        <div className="w-fit m-auto mt-12 lg:mt-24">
           <Button outline onClick={onClickSeeMore}>
-            {translate("section_category_filter_button")} <ArrowDownIcon className="ml-1" />
+            {loading ? <Skeleton width="200px" /> : translate("section_category_filter_button")} <ArrowDownIcon className="ml-1" />
           </Button>
         </div>
       )}

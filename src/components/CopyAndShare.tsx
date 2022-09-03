@@ -37,7 +37,7 @@ type CopyAndShareProps = {
 
 export const CopyAndShare: FC<CopyAndShareProps> = ({ text, shareData }) => {
   const { t } = useTranslation();
-  
+
   const supportedNavigatorShare = useSupportedNavigatorShare();
   const [copyButtonIsDisabled, setCopyButtonIsDisabled] = useState(false);
 

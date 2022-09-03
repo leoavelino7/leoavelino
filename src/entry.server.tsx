@@ -2,7 +2,7 @@ import { RemixServer } from "@remix-run/react";
 import type { EntryContext } from "@remix-run/server-runtime";
 import { createInstance } from "i18next";
 import Backend from "i18next-fs-backend";
-import {resolve} from "node:path";
+import { resolve } from "node:path";
 import { renderToString } from "react-dom/server";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { i18n } from "./i18n.server";
@@ -30,7 +30,7 @@ export default async function handleRequest(request: Request, statusCode: number
       lng, // The locale we detected above
       ns, // The namespaces the routes about to render want to use
       backend: {
-        loadPath: resolve(`./public/${localePath}`),
+        loadPath: resolve(`./public/${localePath}`)
       }
     });
 
