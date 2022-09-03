@@ -59,7 +59,7 @@ export const links: LinksFunction = () => [{ rel: "stylesheet", href: css }];
 export default function App() {
   const location = useLocation();
   const { gaTrackingId, language } = useLoaderData<LoaderData>();
-  const { i18n, } = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     if (typeof window.gtag !== "undefined" && gaTrackingId?.length) {
@@ -68,7 +68,7 @@ export default function App() {
   }, [location, gaTrackingId]);
 
   useChangeLanguage(language);
-    
+
   return (
     <html lang={language} dir={i18n.dir()} className="theme-light">
       <head>

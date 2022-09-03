@@ -1,11 +1,12 @@
 import classNames from "classnames";
 import { FC } from "react";
 
-type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & Partial<{
-  outline: boolean;
-  small: boolean;
-  type: "submit" | "button";
-}>;
+type ButtonProps = React.HTMLAttributes<HTMLButtonElement> &
+  Partial<{
+    outline: boolean;
+    small: boolean;
+    type: "submit" | "button";
+  }>;
 
 export const Button: FC<ButtonProps> = ({ children, outline, small, ...rest }) => {
   const className = classNames(
@@ -19,10 +20,9 @@ export const Button: FC<ButtonProps> = ({ children, outline, small, ...rest }) =
     }
   );
 
-    return (
-      <button className={`${className}`} {...rest}>
-        {children}
-      </button>
-    );
-  
+  return (
+    <button className={`${className}`} {...rest}>
+      {children}
+    </button>
+  );
 };

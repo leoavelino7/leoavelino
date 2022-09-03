@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "remix";
 import { useTranslation } from "react-i18next";
+import Skeleton from "react-loading-skeleton";
 
 import { LeoAvelinoIcon, TranslateIcon } from "~/icons";
 import { AppLinks } from "~/lib/appLinks";
@@ -11,7 +12,11 @@ import { FontSize, fontSizeList, useFontSize } from "~/hooks/useFontSize";
 
 const getPathnameWithoutLanguage = (pathname: string) => pathname.split("/").slice(2).join("/");
 
-export const Header: FC = () => {
+type HeaderProps = {
+  loading: boolean;
+};
+
+export const Header: FC<HeaderProps> = ({ loading }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,7 +53,7 @@ export const Header: FC = () => {
             label={
               <Fragment>
                 <TranslateIcon />
-                {t("header_languages")}
+                {loading ? <Skeleton width="60px" /> : t("header_languages")}
               </Fragment>
             }
             list={languages}
@@ -59,7 +64,7 @@ export const Header: FC = () => {
 
           <Dropdown<Theme>
             id="theme-dropdown"
-            label={t("header_themes")}
+            label={loading ? <Skeleton width="60px" /> : t("header_themes")}
             list={themes}
             change={(theme) => setTheme(theme.value)}
             itemActive={theme}
@@ -68,7 +73,7 @@ export const Header: FC = () => {
 
           <Dropdown<FontSize>
             id="font-size-dropdown"
-            label={t("header_font_size")}
+            label={loading ? <Skeleton width="60px" /> : t("header_font_size")}
             list={fontSizeList}
             change={(fontSize) => setFontSize(fontSize.value)}
             itemActive={fontSize}
