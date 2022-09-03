@@ -5,36 +5,11 @@ import { Category } from "~/server/database/categories.server";
 import { Post } from "~/server/database/posts.server";
 
 import { AppLinks } from "~/lib/appLinks";
-import { Chip } from "~/components";
+import { Button, Chip } from "~/components";
 import { PostResume } from "./PostResume";
 import classNames from "classnames";
-
-export enum Categories {
-  All = "all",
-  BackEnd = "back-end",
-  FrontEnd = "front-end",
-  Database = "database",
-  SoftSkills = "soft-skills",
-  Default = "default"
-}
-
-const categoriesColor = {
-  [Categories.All]: "text-primary bg-primary-light",
-  [Categories.BackEnd]: "text-paper bg-back-end ",
-  [Categories.FrontEnd]: "text-paper bg-front-end",
-  [Categories.Database]: "text-paper bg-database",
-  [Categories.SoftSkills]: "text-paper bg-soft-skills",
-  [Categories.Default]: "text-neutral"
-};
-
-const categoriesEvent = {
-  [Categories.All]: "hover:text-primary hover:bg-primary-light",
-  [Categories.BackEnd]: "hover:text-paper hover:bg-back-end",
-  [Categories.FrontEnd]: "hover:text-paper hover:bg-front-end",
-  [Categories.Database]: "hover:text-paper hover:bg-database",
-  [Categories.SoftSkills]: "hover:text-paper hover:bg-soft-skills",
-  [Categories.Default]: "hover:text-neutral hover:bg-primary"
-};
+import { Categories, categoriesColor, categoriesEvent } from "~/lib/categories";
+import { ArrowDownIcon } from "~/icons";
 
 type CategoryItemProps = {
   slug: string;
@@ -69,21 +44,23 @@ const CategoryItem: FC<CategoryItemProps> = ({ selectedCategory, slug, label, on
   );
 };
 
-type PostListProps = {
+type PostListProps = ComponentI18n & {
   posts: Post[];
   categories: Category[];
   selectedCategory: Categories;
   setSelectedCategory: React.Dispatch<React.SetStateAction<Categories>>;
+  hasMore: boolean;
+  onClickSeeMore: () => void;
 };
 
-export const PostList: FC<PostListProps> = ({ posts, categories, selectedCategory, setSelectedCategory }) => (
-  <section className="relative w-full py-28" id="categorias">
+export const PostList: FC<PostListProps> = ({ translate, loading, posts, categories, selectedCategory, setSelectedCategory, hasMore, onClickSeeMore }) => (
+  <section className="relative w-full py-28" id={translate("section_category_id")}>
     <div className="flex flex-col justify-center items-center text-center px-4 lg:px-0">
       <header>
         <Chip Tag="h2" className="w-fit m-auto">
-          Categorias
+          {translate("section_category_chip")}
         </Chip>
-        <h3 className="font-bold font-poppins max-w-[770px] text-3xl lg:text-4xl mt-4">Filtre posts por categoria</h3>
+        <h3 className="font-bold font-poppins max-w-[770px] text-3xl lg:text-4xl mt-4">{translate("section_category_title")}</h3>
       </header>
       <ul className="flex flex-row flex-nowrap max-w-full overflow-y-auto gap-x-7 py-3 lg:py-6 px-10 mt-11 border border-solid border-neutral-light rounded-md">
         <li>
@@ -96,7 +73,7 @@ export const PostList: FC<PostListProps> = ({ posts, categories, selectedCategor
               selectedCategory === Categories.All ? categoriesColor[Categories.All] : categoriesColor[Categories.Default]
             )}
           >
-            Todas
+            {translate("section_category_filter_all")}
           </button>
         </li>
         {categories.map((category) => (
@@ -121,11 +98,15 @@ export const PostList: FC<PostListProps> = ({ posts, categories, selectedCategor
         })}
       </div>
 
-      {/* <div className="w-fit m-auto mt-12 lg:mt-24">
-        <ButtonLink to={AppLinks.homeCategories} outline>
-          Veja mais <ArrowDownIcon className="ml-1" />
-        </ButtonLink>
-      </div> */}
+      {hasMore && (
+        <div
+          className="w-fit m-auto mt-12 lg:mt-24"
+        >
+          <Button outline onClick={onClickSeeMore}>
+            {translate("section_category_filter_button")} <ArrowDownIcon className="ml-1" />
+          </Button>
+        </div>
+      )}
     </section>
   </section>
 );

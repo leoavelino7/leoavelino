@@ -6,6 +6,7 @@ import { Post } from "~/server/database/posts.server";
 import { AppLinks } from "~/lib/appLinks";
 import { Chip } from "~/components";
 import { ArrowDownIcon } from "~/icons";
+import { Categories, categoriesColor } from "~/lib/categories";
 
 type PostResumeProps = {
   post: Post;
@@ -15,7 +16,7 @@ export const PostResume: FC<PostResumeProps> = ({ post }) => (
   <article className="flex flex-col rounded-md pb-2 hover:brightness-75 hover:bg-neutral-light hover:bg-opacity-30">
     <img src={post.thumbnailLarge} />
     <div className="px-1">
-      <Chip className={`${post.category.className} flex flex-row items-center w-fit gap-x-1 mt-6 mb-4 uppercase`}>
+      <Chip className={`${categoriesColor[post.category.slug as Categories]} flex flex-row items-center w-fit gap-x-1 mt-6 mb-4 uppercase`}>
         <img src={post.category.image} className="w-5 h-5" />
         {post.category.label}
       </Chip>

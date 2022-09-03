@@ -6,3 +6,4 @@ export * from "./TwitterIcon";
 export * from "./FacebookIcon";
 export * from "./InstagramIcon";
 export * from "./CopyIcon";
+export * from "./TranslateIcon";

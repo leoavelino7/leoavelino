@@ -11,7 +11,7 @@ type ButtonLinkProps = React.HTMLAttributes<HTMLAnchorElement> & {
 
 export const ButtonLink: FC<ButtonLinkProps> = ({ to, external = false, children, outline, small, ...rest }) => {
   const className = classNames(
-    "flex justify-center font-poppins font-medium border-primary border-solid border rounded-md transition-all duration-75 ease-linear focus:outline-dashed",
+    "flex justify-center font-poppins font-medium border-primary border-solid border rounded-md transition-all duration-75 ease-linear focus:brightness-75",
     rest.className,
     {
       "bg-primary text-paper hover:brightness-75 focus:brightness-75": outline,

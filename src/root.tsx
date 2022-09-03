@@ -1,16 +1,76 @@
-import { Links, LinksFunction, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "remix";
+import {
+  json,
+  Links,
+  LinksFunction,
+  LiveReload,
+  LoaderFunction,
+  Meta,
+  Outlet,
+  redirect,
+  Scripts,
+  ScrollRestoration,
+  useCatch,
+  useLoaderData,
+  useLocation
+} from "remix";
 import type { MetaFunction } from "remix";
 import css from "./styles/dist.css";
+import { Fragment, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+
+import * as gtag from "~/lib/gtags.client";
+import { fallbackLng, isSupported, Language } from "./lib/language";
+import { useChangeLanguage } from "remix-i18next";
+
+type LoaderData = {
+  gaTrackingId: string | undefined;
+  language: Language;
+};
+
+type Params = {
+  language: Language;
+};
+
+export const loader: LoaderFunction = async (props) => {
+  const params = props.params as Params;
+
+  if (Object.keys(params).length === 0) {
+    return redirect(`/${fallbackLng}/`);
+  }
+
+  if (!isSupported(params.language)) {
+    throw new Response("Not Found", {
+      status: 404
+    });
+  }
+
+  return json<LoaderData>({ gaTrackingId: process.env.GA_TRACKING_ID, language: params.language });
+};
 
 export const meta: MetaFunction = () => {
-  return { title: "Léo Avelino - Blog" };
+  return {
+    charset: "utf-8",
+    viewport: "width=device-width,initial-scale=1"
+  };
 };
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: css }];
 
 export default function App() {
+  const location = useLocation();
+  const { gaTrackingId, language } = useLoaderData<LoaderData>();
+  const { i18n, } = useTranslation();
+
+  useEffect(() => {
+    if (typeof window.gtag !== "undefined" && gaTrackingId?.length) {
+      gtag.pageview(location.pathname, gaTrackingId);
+    }
+  }, [location, gaTrackingId]);
+
+  useChangeLanguage(language);
+    
   return (
-    <html lang="pt-br" className="theme-light">
+    <html lang={language} dir={i18n.dir()} className="theme-light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -43,7 +103,46 @@ export default function App() {
         <Outlet />
         <ScrollRestoration />
         <Scripts />
+        {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
+          <Fragment>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`} />
+            <script
+              async
+              id="gtag-init"
+              dangerouslySetInnerHTML={{
+                __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaTrackingId}', {
+                  page_path: window.location.pathname,
+                });
+              `
+              }}
+            />
+          </Fragment>
+        )}
         {process.env.NODE_ENV === "development" && <LiveReload />}
+      </body>
+    </html>
+  );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  return (
+    <html>
+      <head>
+        <title>Oops! Page not found</title>
+        {/* <Meta /> */}
+        <Links />
+      </head>
+      <body>
+        <h1>
+          {caught.status} {caught.statusText}
+        </h1>
+        <Scripts />
       </body>
     </html>
   );

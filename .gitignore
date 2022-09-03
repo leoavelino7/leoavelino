@@ -10,5 +10,8 @@ api/_build
 dist.css
 
 .env
+.env.production
+.env.development
+.env.local
 
 /tmp

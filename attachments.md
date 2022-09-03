@@ -7,8 +7,8 @@
 # V1
 
 [ ] Not found 404
-[ ] OpenGraph
-[ ] Google Analytics
+[x] OpenGraph
+[x] Google Analytics
 
 # V2
 

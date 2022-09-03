@@ -1,34 +1,64 @@
-import { json, LoaderFunction, MetaFunction } from "remix";
+import { json, LoaderFunction, MetaFunction, redirect } from "remix";
 
 import { PostContent, Posts } from "~/server/database/posts.server";
 import { Categories, Category } from "~/server/database/categories.server";
 import { markdown } from "~/lib/markdown";
 import { Post as PostView } from "../../content/post";
 import { Nullable } from "~/lib/types";
+import { isSupported, Language } from "~/lib/language";
 
 type LoaderData = {
-  code: Nullable<string>;
+  domain: string;
+  url: string;
   slug: string;
+  title: string;
   post: PostContent;
   categories: Category[];
+  code: Nullable<string>;
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+type Params = {
+  language: Language;
+  slug: string;
+};
+
+export const loader: LoaderFunction = async (props) => {
+  const params = props.params as Params;
+
+  if (!isSupported(params.language)) {
+    throw new Response("Not Found", {
+      status: 404
+    });
+  }
+
   const categories = await Categories.getAll();
-  const slug = params.slug as string;
+  const slug = params.slug;
 
   const post = await Posts.getBySlug(slug);
 
+  if (!post) {
+    throw new Response("Not Found", {
+      status: 404
+    });
+  }
+
   const code = await markdown(post?.content ?? "");
 
-  post?.id && Posts.incrementViews(post.id);
+  const title = `Léo Avelino - ${post?.title}`;
+
+  const url = `${process.env.APP_URL}/post/${slug}`;
+
+  const domain = process.env.APP_DOMAIN;
 
   return json(
     {
-      code,
+      domain,
+      url,
       slug,
+      title,
       post,
-      categories
+      categories,
+      code
     },
     200
   );
@@ -37,9 +67,33 @@ export const loader: LoaderFunction = async ({ params }) => {
 export const meta: MetaFunction = (props) => {
   const data = props.data as LoaderData;
 
+  const title = data.title;
+  const description = data.post.description;
+
+  const url = data.url;
+
+  const facebookMetaTags: Record<`og:${string}`, string> = {
+    "og:url": url,
+    "og:title": title,
+    "og:type": "article",
+    "og:description": description,
+    "og:image": data.post.openGraph?.["og:image"] || ""
+  };
+
+  const twitterMetaTags: Record<`twitter:${string}`, string> = {
+    "twitter:card": "summary_large_image",
+    "twitter:APP_DOMAIN": data.domain,
+    "twitter:url": url,
+    "twitter:title": title,
+    "twitter:description": description,
+    "twitter:image": data.post.openGraph?.["twitter:image"] || ""
+  };
+
   return {
-    title: `Léo Avelino - ${data.post.title}`,
-    decription: data.post.description
+    title,
+    description,
+    ...facebookMetaTags,
+    ...twitterMetaTags
   };
 };
 

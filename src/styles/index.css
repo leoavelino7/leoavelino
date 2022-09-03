@@ -23,7 +23,7 @@
 
 /* TODO - Support Themes */
 .theme-dark {
-  --paper: 255 255 255;
+  --paper: 000 000 000;
   --paper-light: 247 248 249;
   --base-color: 42 51 66;
   --neutral: 87 95 107;
@@ -39,25 +39,8 @@
   --category-soft-skills: 168 85 247;
 }
 
-.theme-dark-heroes {
-  --paper: 255 255 255;
-  --paper-light: 247 248 249;
-  --base-color: 42 51 66;
-  --neutral: 87 95 107;
-  --neutral-dark: 51 63 81;
-  --neutral-light: 229 229 229;
-  --neutral-extra-light: 85 105 135;
-  --primary: 66 73 157;
-  --primary-light: 194 196 226;
-  --primary-dark: 10 23 47;
-  --category-front-end: 245 158 11;
-  --category-back-end: 42 209 104;
-  --category-database: 59 130 246;
-  --category-soft-skills: 168 85 247;
-}
-
-.theme-light-heroes {
-  --paper: 255 255 255;
+.theme-heroes {
+  --paper: 0 0 255;
   --paper-light: 247 248 249;
   --base-color: 42 51 66;
   --neutral: 87 95 107;

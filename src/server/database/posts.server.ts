@@ -1,6 +1,13 @@
+import { Nullable } from "~/lib/types";
 import prisma from ".";
 import { Category } from "./categories.server";
 import { Tag } from "./tags.server";
+import PrismaClient from '@prisma/client';
+
+type OpenGraph = {
+  "og:image": string;
+  "twitter:image": string;
+};
 
 type PostTag = {
   tag: Tag;
@@ -14,6 +21,7 @@ export type Post = {
   tags: PostTag[];
   readingTime: number;
   thumbnailLarge: string;
+  openGraph: Nullable<OpenGraph>;
   slug: string;
   createdAt: string;
 };
@@ -24,8 +32,11 @@ export type PostContent = Post & {
 };
 
 export namespace Posts {
-  export const getAll = async (maxResults: number) =>
+  export const getAll = async (options?:  Pick<PrismaClient.Prisma.PostsAggregateArgs, "cursor" | "take" | "skip">) =>
     await prisma.posts.findMany({
+      where: {
+        publised: true
+      },
       orderBy: {
         createdAt: "desc"
       },
@@ -36,16 +47,17 @@ export namespace Posts {
         createdAt: true,
         readingTime: true,
         thumbnailLarge: true,
+        openGraph: true,
         slug: true,
         category: {
           select: {
             label: true,
-            className: true,
+            slug: true,
             image: true
           }
         }
       },
-      take: maxResults
+      ...options,
     });
 
   export const getBySlug = async (slug: string) =>
@@ -62,6 +74,7 @@ export namespace Posts {
         createdAt: true,
         category: true,
         thumbnailLarge: true,
+        openGraph: true,
         tags: {
           select: {
             tag: {
@@ -74,17 +87,4 @@ export namespace Posts {
         }
       }
     });
-
-  export const incrementViews = async (id: string) => {
-    await prisma.posts.update({
-      where: {
-        id
-      },
-      data: {
-        views: {
-          increment: 1
-        }
-      }
-    });
-  };
 }
