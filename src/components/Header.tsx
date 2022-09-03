@@ -35,10 +35,10 @@ export const Header: FC = () => {
   }, [i18n.resolvedLanguage, language]);
 
   return (
-    <nav className="relative flex items-center w-full bg-paper h-20 header-shadow z-40">
-      <div className="relative flex flex-row justify-between items-center w-full px-4 lg:px-1 m-auto max-w-7xl">
+    <nav className="relative flex items-center w-full bg-paper h-28 md:h-20 header-shadow z-40">
+      <div className="relative flex flex-col gap-y-4 md:flex-row justify-between items-center w-full px-4 lg:px-1 m-auto max-w-7xl">
         <header>
-          <Link to={AppLinks.home(i18n.resolvedLanguage)} className="flex w-fit">
+          <Link to={AppLinks.home(i18n.resolvedLanguage)} className="flex w-fit focus:outline-none focus:opacity-60">
             <LeoAvelinoIcon />
           </Link>
         </header>

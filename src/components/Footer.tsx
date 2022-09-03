@@ -42,7 +42,7 @@ export const Footer: FC<FooterProps> = ({ categories, language = "" }) => {
                 <li key={category.slug} className="w-fit">
                   <Link
                     to={AppLinks.homeCategory(language, category.slug)}
-                    className="flex flex-row gap-x-2 items-center focus:outline-dashed-2 font-poppins font-semibold text-paper hover:brightness-75"
+                    className="flex flex-row gap-x-2 items-center focus:outline-none focus:underline focus:brightness-75 font-poppins font-semibold text-paper hover:brightness-75"
                   >
                     <span className={`${categoriesColor[category.slug as Categories]} p-1 rounded-md`}>
                       <img src={category.image} className="w-4 h-4" />
@@ -62,7 +62,7 @@ export const Footer: FC<FooterProps> = ({ categories, language = "" }) => {
           <ul className="flex flex-row gap-4">
             {medias.map((media) => (
               <li key={media.link} className="flex items-center justify-center w-7 h-7 bg-paper hover:brightness-75 rounded-full">
-                <a href={media.link} target="_blank" className="focus:outline-dashed-2">
+                <a href={media.link} target="_blank" className="focus:outline-none focus:opacity-75">
                   <span className="sr-only">{media.title}</span>
                   {media.Icon}
                 </a>

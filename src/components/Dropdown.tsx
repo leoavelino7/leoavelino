@@ -95,7 +95,6 @@ export const Dropdown = <Item extends Option>({ id, label, list, change, itemCla
       if (!changeButtonRef.current) return;
       setListening(true);
       document.addEventListener("click", click);
-      document.addEventListener("touchstart", click);
     }
   }, [listening]);
 
@@ -106,7 +105,7 @@ export const Dropdown = <Item extends Option>({ id, label, list, change, itemCla
         id={id}
         aria-haspopup="true"
         aria-expanded={isOpenMenu}
-        className="flex gap-2 text-md focus:outline-dashed"
+        className="flex gap-2 text-md focus:outline-none focus:underline"
         onClick={toggleMenu}
       >
         {label}
@@ -116,7 +115,7 @@ export const Dropdown = <Item extends Option>({ id, label, list, change, itemCla
           <ul
             ref={listRef}
             onKeyDown={onKeyDown}
-            className="flex flex-col w-[200px] absolute top-10 right-0 bg-paper header-shadow rounded-md"
+            className="flex flex-col w-[200px] absolute top-10 -right-5 bg-paper header-shadow rounded-md"
             aria-labelledby={id}
           >
             {list.map((item, index) => {

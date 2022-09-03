@@ -84,7 +84,7 @@ export const CopyAndShare: FC<CopyAndShareProps> = ({ text, shareData }) => {
           medias.map((media) => (
             <li key={media.title} className="flex flex-row justify-center">
               <button
-                className="p-2 border border-solid border-primary rounded-md hover:bg-primary hover:text-paper focus:outline-dashed focus:brightness-75"
+                className="p-2 border border-solid border-primary rounded-md hover:bg-primary hover:text-paper focus:outline-none focus:brightness-75"
                 onClick={sharePost}
               >
                 {media.Icon}
