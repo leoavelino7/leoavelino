@@ -4,39 +4,20 @@
 [x] Blog page
 [x] Prisma DB
 
-# V1
-
-[ ] Not found 404
 [x] OpenGraph
 [x] Google Analytics
-
-# V2
+[x] Int11
+[x] Custom Preferences Theme
+[ ] Not found 404
+[ ] Favicon
 
 [ ] Filter by tags
-
-# V3
-
+[ ] Infinite loading
 [ ] Authentication
 [ ] Like Post
 [ ] Save Post
-
-# V4
-
-[ ] Custom Preferences Theme
-[ ] Infinite loading
-
-# V5
-
-[ ] Int11
-
-# V6
-
-[ ] How to request content ?
-
-# V7
-
 [ ] Add Split IO
 
 <!-- Scripts -->
-[ ] Automatic export components `index.tsx`
-[ ] Automatic export icons `index.tsx`
+[x] Automatic export components `index.tsx`
+[x] Automatic export icons `index.tsx`

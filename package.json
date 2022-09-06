@@ -17,7 +17,8 @@
     "prisma:pull": "dotenv -e .env.development prisma db pull",
     "prisma:push": "dotenv -e .env.development prisma db push",
     "prettier:check": "prettier --check 'src/**/*.(tsx|ts|json)'",
-    "prettier:write": "prettier --write 'src/**/*.(tsx|ts|json)'"
+    "prettier:write": "prettier --write 'src/**/*.(tsx|ts|json)'",
+    "magic:export:components": "node ./scripts/export-components"
   },
   "dependencies": {
     "@prisma/client": "4.0.0",
