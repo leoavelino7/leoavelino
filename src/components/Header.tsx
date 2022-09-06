@@ -8,7 +8,7 @@ import { isSupported, languages, LanguageItem } from "~/lib/language";
 import { FC, Fragment, useEffect, useState } from "react";
 import { Dropdown } from "./Dropdown";
 import { Theme, themes, useTheme } from "~/hooks/useTheme";
-import { FontSize, fontSizeList, useFontSize } from "~/hooks/useFontSize";
+import { FontSize, useFontSize } from "~/hooks/useFontSize";
 
 const getPathnameWithoutLanguage = (pathname: string) => pathname.split("/").slice(2).join("/");
 
@@ -22,7 +22,7 @@ export const Header: FC<HeaderProps> = ({ loading }) => {
   const location = useLocation();
 
   const [theme, setTheme] = useTheme();
-  const [fontSize, setFontSize] = useFontSize();
+  const [fontSize, setFontSize, fontSizeList] = useFontSize();
   const [language, setLanguage] = useState("");
 
   const changeLanguage = ({ value }: LanguageItem) => {
