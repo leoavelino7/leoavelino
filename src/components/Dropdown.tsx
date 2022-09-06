@@ -34,6 +34,7 @@ export const Dropdown = <Item extends Option>({ id, label, list, change, itemCla
 
   const changeButtonRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const buttonActiveRef = useRef<HTMLButtonElement>(null);
 
   const toggleMenu = () => void setIsOpenMenu((isOpen) => !isOpen);
 
@@ -76,6 +77,10 @@ export const Dropdown = <Item extends Option>({ id, label, list, change, itemCla
 
   useEffect(() => {
     if (isOpenMenu) {
+      if (buttonActiveRef.current) {
+        buttonActiveRef.current.focus();
+        return;
+      }
       const firstItem = listRef.current?.firstChild?.firstChild as Nullable<HTMLLIElement>;
       firstItem?.focus();
       return;
@@ -119,13 +124,15 @@ export const Dropdown = <Item extends Option>({ id, label, list, change, itemCla
             aria-labelledby={id}
           >
             {list.map((item, index) => {
+              const isActive = item.value === itemActive;
+
               const className = classNames(itemClassName, {
-                "bg-primary-light bg-opacity-50": item.value === itemActive
+                "bg-primary-light bg-opacity-50": isActive
               });
 
               return (
                 <li key={item.value}>
-                  <button data-item-position={index} className={className} onClick={() => change(item)}>
+                  <button ref={isActive ? buttonActiveRef : undefined} data-item-position={index} className={className} onClick={() => change(item)}>
                     {item.children}
                   </button>
                 </li>
