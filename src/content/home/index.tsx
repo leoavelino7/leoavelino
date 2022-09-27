@@ -1,5 +1,5 @@
-import { Fragment, useState } from "react";
-import { useLoaderData } from "remix";
+import { Fragment } from "react";
+import { useLoaderData, useSearchParams } from "remix";
 import { useTranslation } from "react-i18next";
 
 import { Header, Footer } from "~/components";
@@ -12,9 +12,8 @@ import { PostList } from "./PostList";
 import { Categories } from "~/lib/categories";
 
 type LoaderData = {
-  posts: Post[];
   categories: Category[];
-  hasMore: boolean;
+  posts: Post[];
 };
 
 export const Home = () => {
@@ -22,11 +21,9 @@ export const Home = () => {
 
   const data = useLoaderData<LoaderData>();
 
-  const [selectedCategory, setSelectedCategory] = useState<Categories>(Categories.All);
-
-  const seeMore = () => {
-    // TODO - Infinity loading
-  };
+  const [searchParams, setSearchParams] = useSearchParams({
+    category: Categories.All
+  });
 
   return (
     <Fragment>
@@ -39,10 +36,8 @@ export const Home = () => {
           loading={!ready}
           posts={data.posts}
           categories={data.categories}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          hasMore={data.hasMore}
-          onClickSeeMore={seeMore}
+          selectedCategory={searchParams.get("category") as Categories}
+          setSelectedCategory={(category) => setSearchParams({ category })}
         />
         <Libs translate={t} loading={!ready} />
         <Feedbacks translate={t} loading={!ready} />

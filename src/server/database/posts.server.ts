@@ -32,7 +32,7 @@ export type PostContent = Post & {
 };
 
 export namespace Posts {
-  export const getAll = async (options?: Pick<PrismaClient.Prisma.PostsAggregateArgs, "cursor" | "take" | "skip">) =>
+  export const getAll = async (options?: Pick<PrismaClient.Prisma.PostsAggregateArgs, "where" | "cursor" | "take" | "skip">) =>
     await prisma.posts.findMany({
       where: {
         publised: true
