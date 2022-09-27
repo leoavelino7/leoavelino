@@ -83,7 +83,7 @@ export const meta: MetaFunction = (props) => {
 
   return {
     title,
-    decription: description,
+    description,
     ...facebookMetaTags,
     ...twitterMetaTags
   };
