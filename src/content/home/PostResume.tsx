@@ -13,7 +13,7 @@ type PostResumeProps = {
 };
 
 export const PostResume: FC<PostResumeProps> = ({ post }) => (
-  <article className="flex flex-col rounded-md pb-2 hover:brightness-75 hover:bg-neutral-light hover:bg-opacity-30">
+  <article className="flex flex-col rounded-md pb-2">
     <img src={post.thumbnailLarge} />
     <div className="px-1">
       <Chip className={`${categoriesColor[post.category.slug as Categories]} flex flex-row items-center w-fit gap-x-1 mt-6 mb-4 uppercase`}>
