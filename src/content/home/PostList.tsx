@@ -78,7 +78,7 @@ export const PostList: FC<PostListProps> = ({ translate, loading, posts, categor
     <section className="mt-9 px-4 lg:px-0">
       <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-fit gap-y-11 gap-x-8 max-w-7xl px-1">
         {posts.map((post) => (
-          <PostResume key={post.id} post={post} />
+          <PostResume key={post.id} translate={translate} loading={loading} post={post} />
         ))}
       </div>
     </section>
