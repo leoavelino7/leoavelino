@@ -39,7 +39,7 @@ export const Post = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header loading={!ready} />
       <main className="bg-paper-light">
         <header className="flex flex-col justify-center items-center px-4 pt-24 pb-12">
           <p className="flex flex-row gap-x-2 items-center text-primary font-medium font-poppins">
@@ -81,7 +81,7 @@ export const Post = () => {
           </footer>
         </section>
       </main>
-      <Footer categories={data.categories} />
+      <Footer language={i18n.resolvedLanguage} categories={data.categories} loading={!ready} />
     </Fragment>
   );
 };
