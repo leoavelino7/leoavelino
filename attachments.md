@@ -11,9 +11,10 @@
 [x] Favicon
 [x] OpenGraph
 [x] Filter by tags
-[ ] Remove reading time
+[x] Remove reading time
 
 <!-- Version 1.0.1 -->
+[ ] Refactor - Bugs
 
 <!-- Version 2 -->
 [ ] Authentication

@@ -38,15 +38,15 @@ model Posts {
   title          String      @db.VarChar(256)
   description    String      @db.VarChar(256)
   content        String      @db.Text
-  readingTime    Int         @default(0)
   tags           PostsTags[]
   category       Categories  @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   categoryId     String
-  publised       Boolean     @default(false)
+  published      Boolean     @default(false)
   thumbnailLarge String      @default("https://via.placeholder.com/1140x641")
-  openGraph      Json?        
+  openGraph      Json?
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
+
   @@map("posts")
 }
 

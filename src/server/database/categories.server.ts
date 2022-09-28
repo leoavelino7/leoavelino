@@ -20,7 +20,7 @@ export namespace Categories {
       where: {
         posts: {
           some: {
-            publised: true
+            published: true
           }
         }
       }
