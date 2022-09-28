@@ -19,7 +19,6 @@ export type Post = {
   description: string;
   category: Category;
   tags: PostTag[];
-  readingTime: number;
   thumbnailLarge: string;
   openGraph: Nullable<OpenGraph>;
   slug: string;
@@ -35,7 +34,7 @@ export namespace Posts {
   export const getAll = async (options?: Pick<PrismaClient.Prisma.PostsAggregateArgs, "where" | "cursor" | "take" | "skip">) =>
     await prisma.posts.findMany({
       where: {
-        publised: true
+        published: true
       },
       orderBy: {
         createdAt: "desc"
@@ -45,7 +44,6 @@ export namespace Posts {
         title: true,
         description: true,
         createdAt: true,
-        readingTime: true,
         thumbnailLarge: true,
         openGraph: true,
         slug: true,
@@ -70,7 +68,6 @@ export namespace Posts {
         title: true,
         description: true,
         content: true,
-        readingTime: true,
         createdAt: true,
         category: true,
         thumbnailLarge: true,

@@ -29,7 +29,7 @@ export const loader: LoaderFunction = async (props) => {
 
   const posts = await Posts.getAll({
     where: {
-      publised: true,
+      published: true,
       category: {
         slug: categorySlug
       }
