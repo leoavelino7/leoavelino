@@ -1,8 +1,8 @@
-import { Nullable } from "~/lib/types";
 import prisma from ".";
-import { Category } from "./categories.server";
-import { Tag } from "./tags.server";
-import PrismaClient from "@prisma/client";
+import type { Nullable } from "~/lib/types";
+import type { Category } from "./categories.server";
+import type { Tag } from "./tags.server";
+import type PrismaClient from "@prisma/client";
 
 type OpenGraph = {
   "og:image": string;

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Skeleton from "react-loading-skeleton";
 
 import { ButtonLink, Chip } from "~/components";
@@ -35,13 +35,23 @@ export const Libs: FC<ComponentI18n> = ({ translate, loading }) => (
           <section key={lib.name} className="bg-paper flex flex-col gap-3 rounded-lg border border-solid border-neutral-light py-11 px-10">
             <div className="flex flex-row justify-between">
               <h3 className="font-semibold text-neutral-dark text-xl">{lib.name}</h3>
-              <a href={lib.githubLink} target="_blank" className="hidden lg:flex flex-row gap-1 text-primary font-medium focus:outline-dashed">
+              <a
+                href={lib.githubLink}
+                target="_blank"
+                className="hidden lg:flex flex-row gap-1 text-primary font-medium focus:outline-dashed"
+                rel="noreferrer"
+              >
                 {loading ? <Skeleton width="100px" /> : translate("section_libs_button")} <span className="sr-only"> - {lib.name}</span>{" "}
                 <GitHubIcon />
               </a>
             </div>
             <p className="text-neutral">{loading ? <Skeleton width="100%" /> : translate(lib.description)}</p>
-            <a href={lib.githubLink} target="_blank" className="flex flex-row lg:hidden gap-1 text-primary font-medium focus:outline-dashed">
+            <a
+              href={lib.githubLink}
+              target="_blank"
+              className="flex flex-row lg:hidden gap-1 text-primary font-medium focus:outline-dashed"
+              rel="noreferrer"
+            >
               {loading ? <Skeleton width="120px" /> : translate("section_libs_button")} <span className="sr-only"> - {lib.name}</span> <GitHubIcon />
             </a>
           </section>

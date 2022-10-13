@@ -4,5 +4,5 @@ export const AppLinks = {
   githubBlog: "https://github.com/leoavelino7/leoavelino",
   homeCategories: (language: string, categories: string) => `/${language}/#${categories}`,
   homeCategory: (language: string, category: string) => `/${language}/#categorias?category=${category}`,
-  post: (slug: string) => `/post/${slug}`
+  post: (language: string, slug: string) => `/${language}/post/${slug}`
 } as const;

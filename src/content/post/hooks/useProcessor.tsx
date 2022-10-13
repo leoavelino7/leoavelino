@@ -1,8 +1,9 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect } from "react";
+import type { ReactNode } from "react";
 
 import { rehype } from "~/lib/rehype";
 import { slugify } from "~/lib/helpers";
-import { Link } from "remix";
+import { Link } from "@remix-run/react";
 
 const parseTextHeaders = (html: Document) =>
   Array.from(html.querySelectorAll("h1,h2,h3,h4,h5,h6")).map((headerItem) => {

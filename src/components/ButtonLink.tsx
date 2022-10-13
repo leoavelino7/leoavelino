@@ -1,6 +1,6 @@
 import classNames from "classnames";
-import { FC } from "react";
-import { Link } from "remix";
+import type { FC } from "react";
+import { Link } from "@remix-run/react";
 
 type ButtonLinkProps = React.HTMLAttributes<HTMLAnchorElement> & {
   to: string;
@@ -23,7 +23,7 @@ export const ButtonLink: FC<ButtonLinkProps> = ({ to, external = false, children
 
   if (external) {
     return (
-      <a href={to} className={`${className}`} target="_blank" {...rest}>
+      <a href={to} className={`${className}`} target="_blank" rel="noreferrer" {...rest}>
         {children}
       </a>
     );

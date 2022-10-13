@@ -1,10 +1,10 @@
 import { Fragment } from "react";
-import { useLoaderData, useSearchParams } from "remix";
+import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 
 import { Header, Footer } from "~/components";
-import { Category } from "~/server/database/categories.server";
-import { Post } from "~/server/database/posts.server";
+import type { Category } from "~/server/database/categories.server";
+import type { Post } from "~/server/database/posts.server";
 import { BannerMain } from "./BannerMain";
 import { Feedbacks } from "./Feedbacks";
 import { Libs } from "./Libs";
