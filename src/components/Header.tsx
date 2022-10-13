@@ -1,14 +1,18 @@
-import { Link, useLocation, useNavigate } from "remix";
+import { Link, useLocation, useNavigate } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
 
 import { LeoAvelinoIcon, TranslateIcon } from "~/icons";
 import { AppLinks } from "~/lib/appLinks";
-import { isSupported, languages, LanguageItem } from "~/lib/language";
-import { FC, Fragment, useEffect, useState } from "react";
+import { isSupported, languages } from "~/lib/language";
+import type { LanguageItem } from "~/lib/language";
+import type { FC } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dropdown } from "./Dropdown";
-import { Theme, themes, useTheme } from "~/hooks/useTheme";
-import { FontSize, useFontSize } from "~/hooks/useFontSize";
+import { themes, useTheme } from "~/hooks/useTheme";
+import type { Theme } from "~/hooks/useTheme";
+import { useFontSize } from "~/hooks/useFontSize";
+import type { FontSize } from "~/hooks/useFontSize";
 
 const getPathnameWithoutLanguage = (pathname: string) => pathname.split("/").slice(2).join("/");
 

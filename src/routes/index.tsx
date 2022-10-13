@@ -1,4 +1,5 @@
-import { json, LoaderFunction, MetaFunction } from "remix";
+import type { LoaderFunction, MetaFunction } from "remix";
+import { json } from "remix";
 import { Home } from "~/content/home";
 import { i18n } from "~/i18n.server";
 import { fallbackLng } from "~/lib/language";

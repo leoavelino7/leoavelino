@@ -1,8 +1,8 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Skeleton from "react-loading-skeleton";
 
-import { Category } from "~/server/database/categories.server";
-import { Post } from "~/server/database/posts.server";
+import type { Category } from "~/server/database/categories.server";
+import type { Post } from "~/server/database/posts.server";
 
 import { Chip } from "~/components";
 import { PostResume } from "./PostResume";
@@ -45,7 +45,7 @@ type PostListProps = ComponentI18n & {
   setSelectedCategory: (category: Categories) => void | React.Dispatch<React.SetStateAction<Categories>>;
 };
 
-export const PostList: FC<PostListProps> = ({ translate, loading, posts, categories, selectedCategory, setSelectedCategory }) => (
+export const PostList: FC<PostListProps> = ({ language, translate, loading, posts, categories, selectedCategory, setSelectedCategory }) => (
   <section className="relative w-full py-28" id={translate("section_category_id")}>
     <div className="flex flex-col justify-center items-center text-center px-4 lg:px-0">
       <header className="w-full">
@@ -78,7 +78,7 @@ export const PostList: FC<PostListProps> = ({ translate, loading, posts, categor
     <section className="mt-9 px-4 lg:px-0">
       <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-fit gap-y-11 gap-x-8 max-w-7xl px-1">
         {posts.map((post) => (
-          <PostResume key={post.id} translate={translate} loading={loading} post={post} />
+          <PostResume key={post.id} language={language} translate={translate} loading={loading} post={post} />
         ))}
       </div>
     </section>

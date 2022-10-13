@@ -1,15 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
-import { useLoaderData } from "remix";
+import { useLoaderData } from "@remix-run/react";
 
 import { Header, Footer, Chip } from "~/components";
 import { CopyAndShare } from "~/components/CopyAndShare";
 import { Divider } from "~/components/Divider";
-import { Nullable } from "~/lib/types";
-import { Category } from "~/server/database/categories.server";
-import { PostContent } from "~/server/database/posts.server";
+import type { Nullable } from "~/lib/types";
+import type { Category } from "~/server/database/categories.server";
+import type { PostContent } from "~/server/database/posts.server";
 import { useProcessor } from "./hooks/useProcessor";
-import { Categories, categoriesColor } from "~/lib/categories";
-import { useSupportedNavigatorShare } from "~/hooks/useSupportedNavigatorShare";
+import type { Categories } from "~/lib/categories";
+import { categoriesColor } from "~/lib/categories";
 import { useTranslation } from "react-i18next";
 
 type LoaderData = {
@@ -25,17 +25,14 @@ export const Post = () => {
   const data = useLoaderData<LoaderData>();
   const [shareData, setShareData] = useState<ShareData>({});
   const contentHtml = useProcessor(data.code ?? "");
-  const supportedNavigatorShare = useSupportedNavigatorShare();
 
   useEffect(() => {
-    if (supportedNavigatorShare) {
-      setShareData({
-        title: window.document.title,
-        text: data.post.description,
-        url: window.location.href
-      });
-    }
-  }, [supportedNavigatorShare]);
+    setShareData({
+      title: window.document.title,
+      text: data.post.description,
+      url: window.location.href
+    });
+  }, [data.post.description]);
 
   return (
     <Fragment>
@@ -64,7 +61,7 @@ export const Post = () => {
         <section>
           <header>
             <div className="mx-auto w-full max-w-6xl">
-              <img src={data.post.thumbnailLarge} />
+              <img src={data.post.thumbnailLarge} alt="" />
             </div>
             <div className="px-4 mx-auto w-full max-w-4xl">
               <h3 className="font-poppins text-neutral font-medium text-3xl mt-4 mb-6">{t("summary")}</h3>

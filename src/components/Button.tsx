@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { FC } from "react";
+import type { FC } from "react";
 
 type ButtonProps = React.HTMLAttributes<HTMLButtonElement> &
   Partial<{

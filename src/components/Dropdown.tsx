@@ -2,7 +2,7 @@ import FocusLock from "react-focus-lock";
 
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { Nullable } from "~/lib/types";
+import type { Nullable } from "~/lib/types";
 
 const KeyboardEscape = "Escape";
 

@@ -1,11 +1,15 @@
-import { json, LoaderFunction, MetaFunction, redirect } from "remix";
+import type { LoaderFunction, MetaFunction } from "remix";
+import { json } from "remix";
 
-import { PostContent, Posts } from "~/server/database/posts.server";
-import { Categories, Category } from "~/server/database/categories.server";
+import type { PostContent } from "~/server/database/posts.server";
+import { Posts } from "~/server/database/posts.server";
+import type { Category } from "~/server/database/categories.server";
+import { Categories } from "~/server/database/categories.server";
 import { markdown } from "~/lib/markdown";
 import { Post as PostView } from "../../content/post";
-import { Nullable } from "~/lib/types";
-import { isSupported, Language } from "~/lib/language";
+import type { Nullable } from "~/lib/types";
+import type { Language } from "~/lib/language";
+import { isSupported } from "~/lib/language";
 
 type LoaderData = {
   domain: string;
