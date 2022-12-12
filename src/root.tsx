@@ -1,25 +1,13 @@
-import {
-  json,
-  Links,
-  LinksFunction,
-  LiveReload,
-  LoaderFunction,
-  Meta,
-  Outlet,
-  redirect,
-  Scripts,
-  ScrollRestoration,
-  useCatch,
-  useLoaderData,
-  useLocation
-} from "remix";
-import type { MetaFunction } from "remix";
+import type { LinksFunction, LoaderFunction, MetaFunction } from "remix";
+import { json, redirect } from "remix";
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useCatch, useLoaderData, useLocation } from "@remix-run/react";
 import css from "./styles/dist.css";
 import { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import * as gtag from "~/lib/gtags.client";
-import { fallbackLng, isSupported, Language } from "./lib/language";
+import { fallbackLng, isSupported } from "./lib/language";
+import type { Language } from "./lib/language";
 import { useChangeLanguage } from "remix-i18next";
 
 type LoaderData = {

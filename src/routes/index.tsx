@@ -1,11 +1,10 @@
-import { json, LoaderFunction, MetaFunction } from "remix";
+import type { LoaderFunction, MetaFunction } from "remix";
+import { json } from "remix";
 import { Home } from "~/content/home";
 import { i18n } from "~/i18n.server";
 import { fallbackLng } from "~/lib/language";
 import { Categories } from "~/server/database/categories.server";
 import { Posts } from "~/server/database/posts.server";
-
-const MAX_POST_TO_LIST = 10;
 
 type LoaderData = {
   url: string;
@@ -19,15 +18,24 @@ type Params = {
 };
 
 export const loader: LoaderFunction = async (props) => {
+  const { searchParams } = new URL(props.request.url);
+
+  const category = searchParams.get("category") ?? undefined;
+  const categorySlug = category !== "all" ? category : undefined;
+
   const params = props.params as Params;
   const t = await i18n.getFixedT(params.language ?? fallbackLng, "home");
 
   const categories = await Categories.getAll();
-  const posts = await Posts.getAll({
-    take: MAX_POST_TO_LIST
-  });
 
-  const hasMore = posts.length === MAX_POST_TO_LIST;
+  const posts = await Posts.getAll({
+    where: {
+      published: true,
+      category: {
+        slug: categorySlug
+      }
+    }
+  });
 
   const url = process.env.APP_URL;
 
@@ -43,8 +51,7 @@ export const loader: LoaderFunction = async (props) => {
       url,
       domain,
       categories,
-      posts: posts.slice(1),
-      hasMore
+      posts
     },
     200
   );
@@ -77,7 +84,7 @@ export const meta: MetaFunction = (props) => {
 
   return {
     title,
-    decription: description,
+    description,
     ...facebookMetaTags,
     ...twitterMetaTags
   };

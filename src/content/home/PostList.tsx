@@ -1,26 +1,22 @@
-import { FC } from "react";
-import { Link } from "remix";
+import type { FC } from "react";
 import Skeleton from "react-loading-skeleton";
 
-import { Category } from "~/server/database/categories.server";
-import { Post } from "~/server/database/posts.server";
+import type { Category } from "~/server/database/categories.server";
+import type { Post } from "~/server/database/posts.server";
 
-import { AppLinks } from "~/lib/appLinks";
-import { Button, Chip } from "~/components";
+import { Chip } from "~/components";
 import { PostResume } from "./PostResume";
 import classNames from "classnames";
 import { Categories, categoriesColor, categoriesEvent } from "~/lib/categories";
-import { ArrowDownIcon } from "~/icons";
 
 type CategoryItemProps = {
   slug: string;
   label: string;
   selectedCategory: Categories;
-  hasPosts: boolean;
   onClick: (slug: Categories) => void;
 };
 
-const CategoryItem: FC<CategoryItemProps> = ({ selectedCategory, slug, label, onClick, hasPosts }) => {
+const CategoryItem: FC<CategoryItemProps> = ({ selectedCategory, slug, label, onClick }) => {
   const categoryClassName =
     selectedCategory === slug
       ? categoriesColor[selectedCategory as Categories] ?? categoriesColor[Categories.Default]
@@ -30,15 +26,12 @@ const CategoryItem: FC<CategoryItemProps> = ({ selectedCategory, slug, label, on
     "whitespace-nowrap py-2 px-4 font-bold rounded-md",
     categoryClassName,
     categoriesEvent[slug as Categories],
-    "focus:outline-dashed",
-    {
-      "cursor-not-allowed opacity-40": !hasPosts
-    }
+    "focus:outline-dashed"
   );
 
   return (
     <li key={slug}>
-      <button type="button" onClick={hasPosts ? () => onClick(slug as Categories) : undefined} className={className} disabled={!hasPosts}>
+      <button type="button" onClick={() => onClick(slug as Categories)} className={className}>
         {label}
       </button>
     </li>
@@ -49,21 +42,10 @@ type PostListProps = ComponentI18n & {
   posts: Post[];
   categories: Category[];
   selectedCategory: Categories;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<Categories>>;
-  hasMore: boolean;
-  onClickSeeMore: () => void;
+  setSelectedCategory: (category: Categories) => void | React.Dispatch<React.SetStateAction<Categories>>;
 };
 
-export const PostList: FC<PostListProps> = ({
-  translate,
-  loading,
-  posts,
-  categories,
-  selectedCategory,
-  setSelectedCategory,
-  hasMore,
-  onClickSeeMore
-}) => (
+export const PostList: FC<PostListProps> = ({ language, translate, loading, posts, categories, selectedCategory, setSelectedCategory }) => (
   <section className="relative w-full py-28" id={translate("section_category_id")}>
     <div className="flex flex-col justify-center items-center text-center px-4 lg:px-0">
       <header className="w-full">
@@ -89,34 +71,16 @@ export const PostList: FC<PostListProps> = ({
           </button>
         </li>
         {categories.map((category) => (
-          <CategoryItem
-            key={category.slug}
-            {...category}
-            selectedCategory={selectedCategory}
-            onClick={setSelectedCategory}
-            hasPosts={category._count.posts > 0}
-          />
+          <CategoryItem key={category.slug} {...category} selectedCategory={selectedCategory} onClick={setSelectedCategory} />
         ))}
       </ul>
     </div>
     <section className="mt-9 px-4 lg:px-0">
       <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-fit gap-y-11 gap-x-8 max-w-7xl px-1">
-        {posts.map((post) => {
-          return (
-            <Link key={post.id} to={AppLinks.post(post.slug)} tabIndex={-1}>
-              <PostResume post={post} />
-            </Link>
-          );
-        })}
+        {posts.map((post) => (
+          <PostResume key={post.id} language={language} translate={translate} loading={loading} post={post} />
+        ))}
       </div>
-
-      {hasMore && (
-        <div className="w-fit m-auto mt-12 lg:mt-24">
-          <Button outline onClick={onClickSeeMore}>
-            {loading ? <Skeleton width="200px" /> : translate("section_category_filter_button")} <ArrowDownIcon className="ml-1" />
-          </Button>
-        </div>
-      )}
     </section>
   </section>
 );

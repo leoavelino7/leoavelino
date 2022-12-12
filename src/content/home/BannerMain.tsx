@@ -1,4 +1,5 @@
-import { FC, Fragment } from "react";
+import type { FC } from "react";
+import { Fragment } from "react";
 import Skeleton from "react-loading-skeleton";
 
 import { AppLinks } from "~/lib/appLinks";

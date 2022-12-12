@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import Skeleton from "react-loading-skeleton";
 
 import { ButtonLink } from "~/components";
@@ -29,7 +29,7 @@ export const Feedbacks: FC<ComponentI18n> = ({ translate, loading }) => (
           </ol>
         </ul>
         <div className="w-fit">
-          <ButtonLink to={AppLinks.githubBlog} small outline>
+          <ButtonLink to={AppLinks.githubBlog} small outline external>
             {loading ? <Skeleton width="120px" /> : translate("section_feedback_step_button")}
           </ButtonLink>
         </div>

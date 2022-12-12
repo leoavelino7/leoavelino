@@ -1,5 +1,6 @@
-# V0
+# Roadmap
 
+<!-- Version 1.0.0 -->
 [x] Home
 [x] Blog page
 [x] Prisma DB
@@ -9,10 +10,15 @@
 [x] Int11
 [x] Custom Preferences Theme
 [ ] Not found 404
-[ ] Favicon
+[x] Favicon
+[x] OpenGraph
+[x] Filter by tags
+[x] Remove reading time
 
-[ ] Filter by tags
-[ ] Infinite loading
+<!-- Version 1.0.1 -->
+[ ] Refactor - Bugs
+
+<!-- Version 2 -->
 [ ] Authentication
 [ ] Like Post
 [ ] Save Post

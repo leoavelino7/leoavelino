@@ -1,8 +1,8 @@
-import { Nullable } from "~/lib/types";
 import prisma from ".";
-import { Category } from "./categories.server";
-import { Tag } from "./tags.server";
-import PrismaClient from "@prisma/client";
+import type { Nullable } from "~/lib/types";
+import type { Category } from "./categories.server";
+import type { Tag } from "./tags.server";
+import type PrismaClient from "@prisma/client";
 
 type OpenGraph = {
   "og:image": string;
@@ -19,7 +19,6 @@ export type Post = {
   description: string;
   category: Category;
   tags: PostTag[];
-  readingTime: number;
   thumbnailLarge: string;
   openGraph: Nullable<OpenGraph>;
   slug: string;
@@ -32,10 +31,10 @@ export type PostContent = Post & {
 };
 
 export namespace Posts {
-  export const getAll = async (options?: Pick<PrismaClient.Prisma.PostsAggregateArgs, "cursor" | "take" | "skip">) =>
+  export const getAll = async (options?: Pick<PrismaClient.Prisma.PostsAggregateArgs, "where" | "cursor" | "take" | "skip">) =>
     await prisma.posts.findMany({
       where: {
-        publised: true
+        published: true
       },
       orderBy: {
         createdAt: "desc"
@@ -45,7 +44,6 @@ export namespace Posts {
         title: true,
         description: true,
         createdAt: true,
-        readingTime: true,
         thumbnailLarge: true,
         openGraph: true,
         slug: true,
@@ -70,7 +68,6 @@ export namespace Posts {
         title: true,
         description: true,
         content: true,
-        readingTime: true,
         createdAt: true,
         category: true,
         thumbnailLarge: true,

@@ -1,4 +1,5 @@
-import { FC, Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { toast, ToastContainer } from "react-toastify";
 import { useSupportedNavigatorShare } from "~/hooks/useSupportedNavigatorShare";
